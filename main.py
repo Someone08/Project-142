@@ -1,10 +1,20 @@
 from flask import Flask, jsonify, request
-
 from storage import all_articles, liked_articles, not_liked_articles
 from demographic_filtering import output
 from content_filtering import get_recommendations
+import pandas as pd
+import csv 
 
 app = Flask(__name__)
+
+articles = pd.read_csv('articles.csv')
+
+articles.columns = ['id'] + articles.columns[1:].tolist()
+
+all_articles = articles.values.tolist()
+liked_articles = []
+not_liked_articles = []
+
 
 @app.route("/get-article")
 def get_article():
